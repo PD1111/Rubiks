@@ -1,0 +1,5 @@
+﻿  Camera.cpp
+c:\users\嘉伟\documents\visual studio 2015\projects\middleware\glm\glm\core\func_common.inl : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+c:\users\嘉伟\documents\visual studio 2015\projects\middleware\glm\glm\core\func_integer.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+  GraphicsPad.vcxproj -> C:\Users\嘉伟\Documents\Visual Studio 2015\Projects\GraphicsPad\Debug\GraphicsPad.exe
+  GraphicsPad.vcxproj -> C:\Users\嘉伟\Documents\Visual Studio 2015\Projects\GraphicsPad\Debug\GraphicsPad.pdb (Full PDB)
