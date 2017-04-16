@@ -2,6 +2,7 @@
 #define ME_GL_WINDOW
 #pragma once
 #include <QtOpenGL\QGLWidget>
+#include "Scene.h"
 using namespace std;
 
 class MeGlWindow : public QGLWidget
@@ -20,6 +21,9 @@ protected:
 
 public:
 	~MeGlWindow();
+	
+private:
+	std::shared_ptr<Scene> world;
 };
 
 #endif

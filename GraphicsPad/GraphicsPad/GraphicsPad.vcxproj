@@ -154,6 +154,7 @@
     <ClCompile Include="FaceDrawable.cpp" />
     <ClCompile Include="Mainer.cpp" />
     <ClCompile Include="MeGlWindow.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShapeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="FaceDrawable.h" />
     <ClInclude Include="MeGlWindow.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="ShapeData.h" />
     <ClInclude Include="ShapeGenerator.h" />
     <ClInclude Include="Vertex.h" />

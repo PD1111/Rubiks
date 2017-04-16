@@ -61,7 +61,7 @@ void MeGlWindow::sendDatatoOpenGL()
 {
 	const float RED_TRIANGLE_Z = -0.5f;
 	const float BLUE_TRIANGLE_Z = 0.5f;
-	ShapeData* shape = ShapeGenerator::makeCube();
+	ShapeData* shape = ShapeGenerator::makeTriangle();
 
 	GLuint vertexBufferID;
 	glGenBuffers(1, &vertexBufferID);
@@ -79,23 +79,6 @@ void MeGlWindow::sendDatatoOpenGL()
 
 	delete shape;
 
-	GLuint tranformationMatrixBufferID;
-	glGenBuffers(1, &tranformationMatrixBufferID);
-	glBindBuffer(GL_ARRAY_BUFFER, tranformationMatrixBufferID);
-	
-	glBufferData(GL_ARRAY_BUFFER, sizeof(mat4) * 2, 0, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void*)(sizeof(float) * 0));
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void*)(sizeof(float) * 4));
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void*)(sizeof(float) * 8));
-	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void*)(sizeof(float) * 12));
-	glEnableVertexAttribArray(2);
-	glEnableVertexAttribArray(3);
-	glEnableVertexAttribArray(4);
-	glEnableVertexAttribArray(5);
-	glVertexAttribDivisor(2, 1);
-	glVertexAttribDivisor(3, 1);
-	glVertexAttribDivisor(4, 1);
-	glVertexAttribDivisor(5, 1);
 }
 
 string MeGlWindow::readShaderCode(const char* fileName)
@@ -149,27 +132,27 @@ void MeGlWindow::paintGL()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glViewport(0, 0, width(), height());
+	//
+	//mat4 projectionMatrix = glm::perspective(60.0f, ((float)width() / height()), 0.1f, 10.0f);
+	//
+	//mat4 fullTransforms[] =
+	//{
+	//	projectionMatrix * camera.getWorldToViewMatrix() * glm::translate(mat4(), vec3(-1.0f, 0.0f, -3.0f)) * glm::rotate(mat4(), 36.0f, vec3(1.0f, 0.0f, 0.0f)),
+	//	projectionMatrix * camera.getWorldToViewMatrix() * glm::translate(mat4(), vec3(1.0f, 0.0f, -3.75f)) * glm::rotate(mat4(), 126.0f, vec3(0.0f, 1.0f, 0.0f))
+	//};
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(fullTransforms), fullTransforms, GL_DYNAMIC_DRAW);
+	//
+	//
+	//glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, 2);
 
-	mat4 projectionMatrix = glm::perspective(60.0f, ((float)width() / height()), 0.1f, 10.0f);
-
-	mat4 fullTransforms[] =
-	{
-		projectionMatrix * camera.getWorldToViewMatrix() * glm::translate(mat4(), vec3(-1.0f, 0.0f, -3.0f)) * glm::rotate(mat4(), 36.0f, vec3(1.0f, 0.0f, 0.0f)),
-		projectionMatrix * camera.getWorldToViewMatrix() * glm::translate(mat4(), vec3(1.0f, 0.0f, -3.75f)) * glm::rotate(mat4(), 126.0f, vec3(0.0f, 1.0f, 0.0f))
-	};
-	glBufferData(GL_ARRAY_BUFFER, sizeof(fullTransforms), fullTransforms, GL_DYNAMIC_DRAW);
-
-
-	glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, 2);
-
-
+	world->drawGL();
 
 }
 
 void MeGlWindow::mouseMoveEvent(QMouseEvent * event)
 {
-	camera.mouseUpdate(glm::vec2(event->x(), event->y()));
-	repaint();
+	//camera.mouseUpdate(glm::vec2(event->x(), event->y()));
+	//repaint();
 }
 
 void MeGlWindow::keyPressEvent(QKeyEvent * event)
@@ -200,10 +183,13 @@ void MeGlWindow::keyPressEvent(QKeyEvent * event)
 
 void MeGlWindow::initializeGL() 
 {
-	setMouseTracking(true);
+	//setMouseTracking(true);
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 	sendDatatoOpenGL();
+	world = std::make_shared<Scene>();
+	world->InitGL();
+
 	installShaders();
 }
 
@@ -211,4 +197,5 @@ MeGlWindow::~MeGlWindow()
 {
 	glUseProgram(0);
 	glDeleteProgram(programID);
+	world->FinGL();
 }
