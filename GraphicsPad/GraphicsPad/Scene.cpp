@@ -1,8 +1,11 @@
 #include "Scene.h"
 #include "FaceDrawable.h"
+#include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtx\transform.hpp>
 
 
-Scene::Scene()
+Scene::Scene(int ID) :
+	programID(ID)
 {
 	InitCubeFace();
 }
@@ -14,12 +17,13 @@ Scene::~Scene()
 
 void Scene::drawGL()
 {
-	//drawSingleFace(topFace);
-	//drawSingleFace(bottomFace);
-	//drawSingleFace(rightFace);
-	//drawSingleFace(leftFace);
+	InitCubeWorldPosition();
+	drawSingleFace(topFace);
+	drawSingleFace(bottomFace);
+	drawSingleFace(rightFace);
+	drawSingleFace(leftFace);
 	drawSingleFace(frontFace);
-	//drawSingleFace(backFace);
+	drawSingleFace(backFace);
 }
 
 void Scene::InitGL()
@@ -44,14 +48,14 @@ void Scene::FinGL()
 
 void Scene::InitCubeFace()
 {
-	double offset = 0.6666;
+	double offset = 0.5;
 
 	//create top face
 	for (int i = 0; i < 3; i++) 
 	{
 		for (int j = 0; j < 3; j++) 
 		{
-			topFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-1.0 + j * offset, 1, 1 - i * offset), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1), glm::vec3(0, 0, 0)));
+			topFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-0.75 + j * offset, 0.75, 0.75 - i * offset), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 1, 1)));
 		}
 	}
 
@@ -60,7 +64,7 @@ void Scene::InitCubeFace()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			bottomFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-1.0 + j * offset, -1, 1 - i * offset), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 1, 0)));
+			bottomFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-0.75 + j * offset, -0.75, 0.75 - i * offset), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1), glm::vec3(1, 1, 0)));
 		}
 	}
 
@@ -69,7 +73,7 @@ void Scene::InitCubeFace()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			leftFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-1.0, 1 - i * offset, 1 - j * offset), glm::vec3(0, -1, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0)));
+			leftFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-0.75, 0.75 - i * offset, 0.75 - j * offset), glm::vec3(0, -1, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0)));
 		}
 	}
 
@@ -78,7 +82,7 @@ void Scene::InitCubeFace()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			rightFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(1.0, 1 - i * offset, 1 - j * offset), glm::vec3(0, -1, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0.647, 0)));
+			rightFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(0.75, 0.75 - i * offset, 0.75 - j * offset), glm::vec3(0, -1, 0), glm::vec3(0, 0, 1), glm::vec3(1, 0.647, 0)));
 		}
 	}
 
@@ -87,7 +91,7 @@ void Scene::InitCubeFace()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			frontFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-1.0 + j * offset, 1 - i * offset, -1), glm::vec3(1, 0, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, 1)));
+			frontFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-0.75 + j * offset, 0.75 - i * offset, 1.25), glm::vec3(1, 0, 0), glm::vec3(0, -1, 0), glm::vec3(0, 0, 1)));
 		}
 	}
 
@@ -96,9 +100,20 @@ void Scene::InitCubeFace()
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			backFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-1.0 + j * offset, 1 - i * offset, 1), glm::vec3(1, 0, 0), glm::vec3(0, -1, 0), glm::vec3(0, 1, 0)));
+			backFace.push_back(std::make_shared<FaceDrawable>(glm::vec3(-0.75 + j * offset, 0.75 - i * offset, -0.25), glm::vec3(1, 0, 0), glm::vec3(0, -1, 0), glm::vec3(0, 1, 0)));
 		}
 	}
+}
+
+void Scene::InitCubeWorldPosition()
+{
+	glm::mat4 tranformMatrix = glm::translate(glm::mat4(), glm::vec3(0.0, 0.0, -3.0));
+	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), 36.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 projectionMatrix = glm::perspective(60.0f, width / height, 0.1f, 10.0f);
+	glm::mat4 fullTransformation = projectionMatrix * tranformMatrix * rotationMatrix;
+
+	GLint fulltransformationMatrixUniformLocation = glGetUniformLocation(programID, "fullTransformationMatrix");
+	glUniformMatrix4fv(fulltransformationMatrixUniformLocation, 1, GL_FALSE, &fullTransformation[0][0]);
 }
 
 void Scene::drawSingleFace(std::vector<std::shared_ptr<FaceDrawable>> face)

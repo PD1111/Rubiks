@@ -7,14 +7,16 @@ class FaceDrawable;
 class Scene
 {
 public:
-	Scene();
+	Scene(int ID);
 	~Scene();
 	void drawGL();
 	void InitGL();
 	void FinGL();
+	void UpdateWindowSize(float w, float h)			{ height = h; width = w; }
 
 private:
 	void InitCubeFace();
+	void InitCubeWorldPosition();
 	void drawSingleFace(std::vector<std::shared_ptr<FaceDrawable>> face);
 	void InitSingleFace(std::vector<std::shared_ptr<FaceDrawable>> face);
 	void FinSingleFace(std::vector<std::shared_ptr<FaceDrawable>> face);
@@ -26,5 +28,8 @@ private:
 	 std::vector<std::shared_ptr<FaceDrawable>> rightFace;
 	 std::vector<std::shared_ptr<FaceDrawable>> frontFace;
 	 std::vector<std::shared_ptr<FaceDrawable>> backFace;
+	 float	height;
+	 float	width;
+	 int programID;
 };
 

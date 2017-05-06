@@ -24,15 +24,15 @@ void FaceDrawable::paintGL()
 		basePoint,
 		baseColor,
 
-		glm::vec3(basePoint.x + baseDirection1.x * 0.6, basePoint.y + baseDirection1.y * 0.6, basePoint.z + baseDirection1.z * 0.6),
+		glm::vec3(basePoint.x + baseDirection1.x * 0.45, basePoint.y + baseDirection1.y * 0.45, basePoint.z + baseDirection1.z * 0.45),
 		baseColor,
 
-		glm::vec3(basePoint.x + baseDirection2.x * 0.6, basePoint.y + baseDirection2.y * 0.6, basePoint.z + baseDirection2.z * 0.6),
+		glm::vec3(basePoint.x + baseDirection2.x * 0.45, basePoint.y + baseDirection2.y * 0.45, basePoint.z + baseDirection2.z * 0.45),
 		baseColor,
 
-		glm::vec3(basePoint.x + baseDirection1.x * 0.6 + baseDirection2.x * 0.6, 
-				  basePoint.y + baseDirection1.y * 0.6 + baseDirection2.y * 0.6, 
-				  basePoint.z + baseDirection1.z * 0.6 + baseDirection2.z * 0.6),
+		glm::vec3(basePoint.x + baseDirection1.x * 0.45 + baseDirection2.x * 0.45,
+				  basePoint.y + baseDirection1.y * 0.45 + baseDirection2.y * 0.45,
+				  basePoint.z + baseDirection1.z * 0.45 + baseDirection2.z * 0.45),
 		baseColor,
 	};
 	glBufferData(GL_ARRAY_BUFFER, sizeof(faces), faces, GL_STATIC_DRAW);

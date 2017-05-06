@@ -144,7 +144,7 @@ void MeGlWindow::paintGL()
 	//
 	//
 	//glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0, 2);
-
+	world->UpdateWindowSize(width(), height());
 	world->drawGL();
 
 }
@@ -187,10 +187,9 @@ void MeGlWindow::initializeGL()
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 	sendDatatoOpenGL();
-	world = std::make_shared<Scene>();
-	world->InitGL();
-
 	installShaders();
+	world = std::make_shared<Scene>(programID);
+	world->InitGL();
 }
 
 MeGlWindow::~MeGlWindow()
