@@ -22,10 +22,7 @@ Camera::~Camera()
 void Camera::mouseUpdate(const glm::vec2 & newMousePosition)
 {
 	glm::vec2 mouseDelta = newMousePosition - oldMousePosition;
-	if ( glm::length(mouseDelta) <= 30.0f) 
-	{
-		viewDirection = glm::mat3(glm::rotate(-mouseDelta.x, UP)) * viewDirection;
-	}
+	viewDirection = glm::mat3(glm::rotate(-mouseDelta.x, UP)) * viewDirection;
 
 	glm::vec3 toRotateAround = glm::cross(viewDirection, UP);
 	viewDirection = glm::mat3(glm::rotate(-mouseDelta.y, toRotateAround)) * viewDirection;

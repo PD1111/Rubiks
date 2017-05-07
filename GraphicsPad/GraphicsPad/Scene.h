@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "Camera.h"
 
 class FaceDrawable;
 
@@ -13,6 +14,7 @@ public:
 	void InitGL();
 	void FinGL();
 	void UpdateWindowSize(float w, float h)			{ height = h; width = w; }
+	void UpdateMousePos(float x, float y)			{ viewpoint->mouseUpdate(glm::vec2(x, y)); }
 
 private:
 	void InitCubeFace();
@@ -31,5 +33,6 @@ private:
 	 float	height;
 	 float	width;
 	 int programID;
+	 Camera* viewpoint;
 };
 

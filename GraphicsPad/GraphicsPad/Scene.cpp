@@ -5,7 +5,8 @@
 
 
 Scene::Scene(int ID) :
-	programID(ID)
+	programID(ID),
+	viewpoint(new Camera())
 {
 	InitCubeFace();
 }
@@ -13,6 +14,7 @@ Scene::Scene(int ID) :
 
 Scene::~Scene()
 {
+	delete viewpoint;
 }
 
 void Scene::drawGL()
@@ -110,7 +112,7 @@ void Scene::InitCubeWorldPosition()
 	glm::mat4 tranformMatrix = glm::translate(glm::mat4(), glm::vec3(0.0, 0.0, -3.0));
 	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), 36.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::mat4 projectionMatrix = glm::perspective(60.0f, width / height, 0.1f, 10.0f);
-	glm::mat4 fullTransformation = projectionMatrix * tranformMatrix * rotationMatrix;
+	glm::mat4 fullTransformation = projectionMatrix * tranformMatrix * viewpoint->getWorldToViewMatrix() * rotationMatrix;
 
 	GLint fulltransformationMatrixUniformLocation = glGetUniformLocation(programID, "fullTransformationMatrix");
 	glUniformMatrix4fv(fulltransformationMatrixUniformLocation, 1, GL_FALSE, &fullTransformation[0][0]);
